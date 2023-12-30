@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{{url_for('static',filename='css/materialize.min.css')}}">
+</head>
+
+<body>
+    
+    <p>Você está logado como: {{ userLoged }} <a href="{{ url_for('logOff') }}"><button>DESLOGAR</button></a></p>
+    
+
+    <div class='form-group'>
+        <p>Inserir tarefa</p>
+        <form method="POST" action="{{ url_for('insert_task') }}">
+            <label for="taskName">Tarefa:</label>
+            <textarea type="text" id="taskName" name="taskName" required></textarea>
+            <button type="submit" class="btn btn-default">Adicionar Tarefa</button>
+        </form>
+
+    </div>
+
+    {% if not tasks %}
+    <p>Não existem tarefas no banco de dados</p>
+    {% else %}
+    <table>
+        <tr>
+            <th>Tarefa</th>
+            <th>Ações</th>
+        </tr>
+        {% for task_id, task_text ,status, id_user in tasks %}
+        <tr>
+            <td>{{ task_text }}</td>
+            <td>
+                <form method="POST" action="{{ url_for('delete_task', task_id=task_id) }}">
+                    <button type="submit">DELETAR</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    {% endif %}
+
+    <script src="{{url_for('static',filename='js/materialize.min.js')}}"></script>
+</body>
+
+</html>
